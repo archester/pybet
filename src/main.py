@@ -33,10 +33,11 @@ def testBetSimulator():
     
     wins=loses=0
     simulator = BetingSimulator()
-    for i in range(0, 1000):
+    for _ in range(0, 1000):
         res = simulator.simulate(bet, verbose=True)
         if res: wins+=1 
         else: loses+=1
     print("WINS: " + str(wins) + " LOSES: " + str(loses))
     
 testBetSimulator()
+#testOffer()

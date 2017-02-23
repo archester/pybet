@@ -12,7 +12,7 @@ class Odd(object):
         return 1 / self.value
         
     def __str__(self):
-        return self.description + "\t" + str(self.value)
+        return "[" + self.description + "] " + str(self.value)
 
 class Event(object):
     def __init__(self, name, odds=[]):
@@ -28,6 +28,14 @@ class Event(object):
                       "\t" + getPercentStr(probability)
         
         return result
+    
+    def asLineString(self):
+        result = self.name
+        for o in self.odds:
+            result += " " + o.__str__()
+        
+        return result
+    
         
     def addOdd(self, odd):
         assert(isinstance(odd, Odd))
@@ -164,3 +172,29 @@ def testBetClass():
 
 # testBetClass()
 
+class Offer(object):
+    def __init__(self):
+        self.events = {}
+        
+    def addEvent(self, id, event):
+        assert (id != "")
+        assert (not (id in self.events.keys()))        
+        assert (isinstance(event, Event))
+        
+        self.events[id] = event;
+
+    def __str__(self):
+        result = "--OFFER-- num of events: " + str(len(self.events)) + "\n"
+
+        for id in sorted(self.events):
+            result += id + " " + self.events[id].asLineString() + "\n";
+
+        return result
+
+def testOffer():
+    event1 = Event("Betis-Barcelona", [Odd("1", 12), Odd("X", 6.3), Odd("2", 1.27)])
+    event2 = Event("Sasullo-Juventus", [Odd("1", 7.2), Odd("X", 4.25), Odd("2", 1.51)])
+    offer = Offer()
+    offer.addEvent("001", event1)
+    offer.addEvent("002", event2)
+    print(offer)
